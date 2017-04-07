@@ -1,0 +1,49 @@
+---
+  - name: Install unzip
+    apt:
+      name: unzip
+      update_cache: yes
+    become: true
+
+  - name: Download Vault
+    command: wget https://releases.hashicorp.com/vault/0.7.0/vault_0.7.0_linux_amd64.zip
+
+  - name: Unzip vault
+    command: unzip vault*
+
+  - name: Install vault
+    command: mv vault /usr/bin/vault
+    become: true
+
+  - name: Remove vault zip
+    file: state=absent path=~/vault_0.7.0_linux_amd64.zip
+
+  - name: Create vault config directory
+    file: state=directory path=/etc/opt/vault/
+    become: true
+
+  - name: Copy vault config to server
+    copy: src=vaultconfig.hcl dest=/etc/opt/vault/
+    become: true
+
+  - name: Copy vault service to server
+    copy: src=vault.service dest=/usr/lib/systemd/system/vault.service
+    become: true
+
+  - name: Start vault service
+    systemd:
+      state: started
+      name: vault
+      daemon_reload: yes
+    become: true
+
+  - pause:
+      seconds: 30
+
+  - name: Initialize the vault
+    command: vault init
+    register: keys
+    environment:
+      VAULT_ADDR: "http://127.0.0.1:8200"
+
+  - debug: msg="{{ keys }}"
