@@ -35,7 +35,7 @@
       seconds: 15
 
   - name: Initialize the vault
-    command: vault init
+    command: vault operator init
     register: keys
     environment:
       VAULT_ADDR: "http://127.0.0.1:8200"
