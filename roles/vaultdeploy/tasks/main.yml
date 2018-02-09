@@ -1,6 +1,6 @@
 ---
   - name: Install unzip
-    apt:
+    package:
       name: unzip
       update_cache: yes
     become: true
