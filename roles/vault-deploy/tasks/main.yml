@@ -5,7 +5,7 @@
       update_cache: yes
     become: true
 
-  - name: download and install vault binary
+  - name: Download and install vault binary
     unarchive:
       src: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip"
       dest: /usr/bin/
