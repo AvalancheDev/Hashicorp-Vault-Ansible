@@ -1,4 +1,4 @@
 ---
 - hosts: vaultservers
   roles:
-    - role: vaultdeploy
+    - role: vault-deploy
